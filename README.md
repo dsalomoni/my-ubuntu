@@ -35,7 +35,7 @@ docker build -t my_ubuntu .
 
 This will create a new Docker image, called `my_ubuntu`, on your system. Note that you must issue the command above from the same directory where you have put the `Dockerfile`. 
 
-The first time you execute this command it will take some time because several files will have to be downloaded. However, subsequent changes will be much faster.
+The first time you execute this command it will take some time because several files will have to be downloaded. However, subsequent rebuilds will be much faster.
 
 ## Run the Ubuntu GUI through Docker
 
