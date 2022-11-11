@@ -45,11 +45,15 @@ Now that you have created your new image, run it with the following command:
 docker run -d --rm --name my_desktop -e TZ=Europe/Rome -v desktop_data:/root -v /dev/shm:/dev/shm -p 6080:80 my_ubuntu
 ```
 
+This command will run the `my_ubuntu` image built in the previous step and create a container called `my_desktop`. Check that this container is running with the command `docker ps`.
+
 All the data you write under `/root` will be saved in a persistent Docker volume called `desktop_data`. 
 
 Now, simply open http://127.0.0.1:6080 on a browser to access your Ubuntu desktop.
 
 Note that you may directly install other programs, for example using `apt install <program>`. _However_, be warned that once the container is stopped (for instance, because you reboot your system) these programs will have to be installed again. If you want your changes to be persistent, edit the `Dockerfile` as stated above and rebuild the image. 
+
+If you want to stop the running Docker container, type `docker stop my_desktop`.
 
 ## Acknowledgments
 
