@@ -53,4 +53,4 @@ Note that you may directly install other programs, for example using `apt instal
 
 ## Acknowledgments
 
-This work is based on the `docker-ubuntu-vnc-desktop` image, available at <a href="https://github.com/fcwu/docker-ubuntu-vnc-desktop">https://github.com/fcwu/docker-ubuntu-vnc-desktop</a>.
+This work is based on a modified version of the `docker-ubuntu-vnc-desktop` image, available at <a href="https://github.com/fcwu/docker-ubuntu-vnc-desktop">https://github.com/fcwu/docker-ubuntu-vnc-desktop</a>, where you can also find several possible additional customizations. If you are curious to know how that image was modified here, have a look at the Dockerfile in the `modified` folder.
