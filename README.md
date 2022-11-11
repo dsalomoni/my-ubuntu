@@ -50,3 +50,7 @@ All the data you write under `/root` will be saved in a persistent Docker volume
 Now, simply open http://127.0.0.1:6080 on a browser to access your Ubuntu desktop.
 
 Note that you may directly install other programs, for example using `apt install <program>`. _However_, be warned that once the container is stopped (for instance, because you reboot your system) these programs will have to be installed again. If you want your changes to be persistent, edit the `Dockerfile` as stated above and rebuild the image. 
+
+## Acknowledgments
+
+This work is based on the `docker-ubuntu-vnc-desktop` image, available at <a href="https://github.com/fcwu/docker-ubuntu-vnc-desktop">https://github.com/fcwu/docker-ubuntu-vnc-desktop</a>.
