@@ -42,12 +42,14 @@ The first time you execute this command it will take some time because several f
 Now that you have created your new image, run it with the following command:
 
 ```
-docker run -d --rm --name my_desktop -e TZ=Europe/Rome -v desktop_data:/root -v /dev/shm:/dev/shm -p 6080:80 my_ubuntu
+docker run -d --rm --name my_desktop -e TZ=Europe/Rome -e USER=ubuntu -e PASSWORD=my_password -v desktop_data:/home/ubuntu -v /dev/shm:/dev/shm -p 6080:80 my_ubuntu
 ```
 
-This command will run the `my_ubuntu` image built in the previous step and create a container called `my_desktop`. Check that this container is running with the command `docker ps`.
+This command will run the `my_ubuntu` image built in the previous step and create a container called `my_desktop`. Check that this container is running with the command `docker ps`. This container will provide a Ubuntu system, and will have a user called `ubuntu`.
 
-All the data you write under `/root` will be saved in a persistent Docker volume called `desktop_data`. 
+You are advised to change the password for the `ubuntu` user modifying the string after PASSWORD in the command above.
+
+All the data you write under `/home/ubuntu` will be saved in a persistent Docker volume called `desktop_data`. 
 
 Now, simply open http://127.0.0.1:6080 on a browser to access your Ubuntu desktop.
 
