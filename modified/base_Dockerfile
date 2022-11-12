@@ -19,7 +19,7 @@ RUN sudo apt update -y && sudo apt upgrade -y
 
 # --> Install your own packages here <--
 RUN sudo apt-get install -y -q --no-install-recommends \
-    wget iputils-ping ssh build-essential curl git unzip zip
+    wget iputils-ping ssh build-essential curl git unzip zip nano
 
 # APT autoremove
 RUN sudo apt -y autoremove
