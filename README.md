@@ -22,7 +22,7 @@ This guide has two sections:
 All you need to do to get a Ubuntu system complete with a GUI via Docker is to issue the following command from a terminal:
 
 ```
-docker run -d --rm --name my_desktop -e TZ=Europe/Rome -e USER=ubuntu -e PASSWORD=my_password -v desktop_data:/home/ubuntu -v /dev/shm:/dev/shm -p 6080:80 dsalomoni/ubuntu-desktop:1.0
+docker run -d --rm --name my_desktop -e TZ=Europe/Rome -e USER=ubuntu -e PASSWORD=my_password --mount src=desktop_data,dst=/home/ubuntu --mount src=/dev/shm,dst=/dev/shm -p 6080:80 dsalomoni/ubuntu-desktop:1.0
 ```
 The first time you execute this command it will take a while, because the Docker image has to be downloaded and stored on your system.
 
@@ -39,8 +39,7 @@ docker stop my_desktop
 - The `docker run` command above runs the Docker image called `dsalomoni/ubuntu-desktop:1.0`, creating a container with Ubuntu called `my_desktop`. You can check that the container is running with the command `docker ps`. 
 - The Ubuntu system will have a user called `ubuntu`, whose password will be the string specified after `PASSWORD=`. _You are encouraged to change that password in the command above_.
 - Any data written to `/home/ubuntu/` in the Ubuntu system will be saved in a "Docker volume" called `desktop_data` (you will learn about Docker volumes in the course <a href="https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2022/433238">Introduction to Big Data Processing Infrastructures</a>, or __BDP1__). 
-- The Ubuntu system has some useful programs already installed. These include, for instance, the `Firefox` browser, `python` and some editors, such as `vi` and `nano`. You may install other programs using the standard ways to install software in Ubuntu. For instance, to install the Spyder editor, you could open a terminal in Ubuntu, and type `sudo update && sudo install -y spyder` (you will be prompted for the password of the `ubuntu` user).
-- **However**, be warned that any programs you manually install in your Ubuntu system will **disappear** after you stop the container, and will have to be installed again the next time you start the container through the `docker run` command above. So, if you find that you need to have other programs installed in Ubuntu beyond what is already available, go to the next section and learn how to customize the Docker image used here.
+- The Ubuntu system has some useful programs already installed. These include, for instance, the `Firefox` browser, `python` and some editors, such as `vi` and `nano`. You may install other programs using the standard ways to install software in Ubuntu. For instance, to install the Spyder editor, you could open a terminal in Ubuntu, and type `sudo update && sudo install -y spyder` (you will be prompted for the password of the `ubuntu` user). **However**, be warned that any programs you manually install in your Ubuntu system will **disappear** after you stop the container, and will have to be installed again the next time you start the container through the `docker run` command above. So, if you find that you need to have other programs installed in Ubuntu beyond what is already available, go to the next section and learn how to customize the Docker image used here.
 
 ## 2. Customize the Docker image
 
@@ -82,7 +81,7 @@ The first time you execute this command it may take some time because several fi
 You can run your newly built image with the following command:
 
 ```
-docker run -d --rm --name my_desktop -e TZ=Europe/Rome -e USER=ubuntu -e PASSWORD=my_password -v desktop_data:/home/ubuntu -v /dev/shm:/dev/shm -p 6080:80 my_ubuntu
+docker run -d --rm --name my_desktop -e TZ=Europe/Rome -e USER=ubuntu -e PASSWORD=my_password --mount src=desktop_data,dst=/home/ubuntu --mount src=/dev/shm,dst=/dev/shm -p 6080:80 my_ubuntu
 ```
 
 This `docker run` command is identical to the one provided in the previous section, with the exception of the last string, which specifies the name of the Docker image to run (`my_ubuntu` here).
@@ -96,6 +95,22 @@ When you are done using your Ubuntu system, stop it with the command
 ```
 docker stop my_desktop
 ```
+
+## To access a directory on your system from Ubuntu
+
+In case you want to make a directory on your host system (running Windows, Linux or Mac OS) visible to Ubuntu, all you need to do is to add a `--mount` flag to the `docker run` command above (either section 1 or section 2); `--mount` has the following syntax:
+
+```
+--mount src=<host_dir>,dst=<container_dir>,type=bind,readonly
+```
+
+For example, if on your Windows system you have the directory `C:\bdb` and want to make it visible under the directory `/host` to Ubuntu, add the following part to the `docker run` command (just add it _after_ the `run`):
+
+```
+--mount src=C:\bdb,dst=/host,type=bind,readonly
+```
+
+If you then open a terminal in Ubuntu and type for instance `ls -l /host`, you should see the files stored under your Windows `C:\bdb` directory. The `readonly` part above prevents Ubuntu from modifying the files on the host. If you want to be able to read _and_ write files present on your host system (**be careful**), remove `readonly`. Note that Windows uses a backslash (`\`) to separate directory paths, while Linux and Mac OS use a regular slash (`/`) instead.
 
 ## Acknowledgments
 
