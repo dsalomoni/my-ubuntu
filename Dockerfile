@@ -7,5 +7,5 @@ FROM dsalomoni/ubuntu-desktop:1.0
 RUN sudo apt update -y && sudo apt upgrade -y
 
 # --> Install your own packages here <--
-RUN sudo apt-get install -y -q --no-install-recommends \
-    nano
+RUN sudo apt install -y -q --no-install-recommends \
+    nmon

@@ -1,61 +1,101 @@
 # my-ubuntu
-This repository contains files used to create a Ubuntu GUI running through Docker. This material is provided by prof. Davide Salomoni for the Master in Bioinformatics at the University of Bologna.
+This repository contains files used to create a Ubuntu system complete with its GUI, through Docker. This is significantly faster than using for example a Virtual Machine.
+
+This material is provided by prof. Davide Salomoni for the Master in Bioinformatics at the University of Bologna.
 
 ## Introduction
 
-A _base Docker image_ was prepared, to create a simple Ubuntu GUI in Docker. Here you will find instructions on how to customize and use this base image.
+A _base Docker image_ was prepared to create a Ubuntu GUI in Docker. The GUI will be accessible via a browser, such as Chrome, Edge, Safari or Firefox. 
 
-It is assumed that you have already installed Docker on your system, and that it is working correctly. You should also know how to edit a file, and how to run a Docker command from the terminal (in Windows, Linux or Mac OS).
+Here you will find instructions on how to use and possibly customize this base image.
 
-## Copy and update a Dockerfile
+**Important**: it is assumed that you have already installed Docker on your system, and that it is working correctly. You should also know how to edit a file, and how to run a Docker command from a terminal on your system (running Windows, Linux or Mac OS).
 
-A _Dockerfile_ is a text file used to create or customize a Docker image. For details, refer to the courses <a href="https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2022/433238">Introduction to Big Data Processing Infrastructures"</a> (__BDP1__) and <a href="https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2022/435337">Infrastructures for Big Data Processing</a> (__BDP2__), part of the <a href="https://corsi.unibo.it/2cycle/Bioinformatics">Two year master in Bioinformatics</a> at the University of Bologna, where details about Docker (among other things) are discussed.
+This guide has two sections:
 
-Open the terminal, download to your machine the file called `Dockerfile` from this repository and open an editor to modify it.
+1. You can run the provided base Docker image as is. This is fine if you want just to test how the Ubuntu GUI works, or if you are happy with using just the programs that are pre-installed on the provided Ubuntu system.
 
-In this Dockerfile, you can add whatever packages you want to be installed on your Ubuntu installation by simply adding them _after_ the line reading `RUN sudo apt-get install ...`. 
+2. Or, you can modify the base Docker image to customize it, for example installing any other programs you want to have available straight away on your Ubuntu system.
 
-As an example, the Dockerfile by default installs the `nano` editor. If, for instance, you wanted to install the Thunderbird email client in addition to the `nano` editor, you would need to have the following lines:
+## 1. Use the provided base Docker image as is
+
+All you need to do to get a Ubuntu system complete with a GUI via Docker is to issue the following command from a terminal:
+
+```
+docker run -d --rm --name my_desktop -e TZ=Europe/Rome -e USER=ubuntu -e PASSWORD=my_password -v desktop_data:/home/ubuntu -v /dev/shm:/dev/shm -p 6080:80 dsalomoni/ubuntu-desktop:1.0
+```
+The first time you execute this command it will take a while, because the Docker image has to be downloaded and stored on your system.
+
+Once the command is executed, access Ubuntu via a browser by opening the URL http://127.0.0.1:6080. 
+
+When you are done using your Ubuntu system, stop it with the command
+
+```
+docker stop my_desktop
+```
+
+### Details
+
+- The `docker run` command above runs the Docker image called `dsalomoni/ubuntu-desktop:1.0`, creating a container with Ubuntu called `my_desktop`. You can check that the container is running with the command `docker ps`. 
+- The Ubuntu system will have a user called `ubuntu`, whose password will be the string specified after `PASSWORD=`. _You are encouraged to change that password in the command above_.
+- Any data written to `/home/ubuntu/` in the Ubuntu system will be saved in a "Docker volume" called `desktop_data` (you will learn about Docker volumes in the course <a href="https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2022/433238">Introduction to Big Data Processing Infrastructures</a>, or __BDP1__). 
+- The Ubuntu system has some useful programs already installed. These include, for instance, the `Firefox` browser, `python` and some editors, such as `vi` and `nano`. You may install other programs using the standard ways to install software in Ubuntu. For instance, to install the Spyder editor, you could open a terminal in Ubuntu, and type `sudo update && sudo install -y spyder` (you will be prompted for the password of the `ubuntu` user).
+- **However**, be warned that any programs you manually install in your Ubuntu system will **disappear** after you stop the container, and will have to be installed again the next time you start the container through the `docker run` command above. So, if you find that you need to have other programs installed in Ubuntu beyond what is already available, go to the next section and learn how to customize the Docker image used here.
+
+## 2. Customize the Docker image
+
+If for instance you want that your Ubuntu system contains software in addition to what was already pre-installed, you need to create a new Docker image, _derived_ from the base image used in the section above. To do this, a _Dockerfile_ is used.
+
+### 2.1 Copy and update a Dockerfile
+
+A _Dockerfile_ is a text file used to create or customize a Docker image. For details, refer to the courses <a href="https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2022/433238">Introduction to Big Data Processing Infrastructures</a> (__BDP1__) and <a href="https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2022/435337">Infrastructures for Big Data Processing</a> (__BDP2__), part of the <a href="https://corsi.unibo.it/2cycle/Bioinformatics">Two year master in Bioinformatics</a> at the University of Bologna, where details about Docker (among other things) are discussed.
+
+On your machine (Windows, Linux or Mac), open the terminal, download the file called `Dockerfile` from this repository and open an editor to modify it.
+
+In this Dockerfile, you can add whatever packages you want installed on your Ubuntu installation by simply adding them _after_ the line reading `RUN sudo apt install ...`. 
+
+As an example, the provided Dockerfile by default installs the `nmon` program, a computer performance system monitor. If, for instance, you wanted to install the `spyder` editor in addition to `nmon`, you would write the following lines:
 
 ```
 [...]
 # --> Install your own packages here <--
-RUN sudo apt-get install -y -q --no-install-recommends \
-    nano thunderbird
+RUN sudo apt install -y -q --no-install-recommends \
+    nmon spyder
 [...]
 ```
 
-## Build your custom Docker image
 
-Once you have edited the `Dockerfile`, you need to build a new Docker image, containing the packages you have specified. Build the new image with the following command:
+### 2.2 Build your custom Docker image
+
+Once you have edited the `Dockerfile`, you need to create (or _build_) a new Docker image, containing the packages you have specified. Build the new image with the following command:
 
 ```
 docker build -t my_ubuntu .
 ```
 
-This will create a new Docker image, called `my_ubuntu`, on your system. Note that you must issue the command above from the same directory where you have put the `Dockerfile`. 
+This will create a new Docker image on your system, called `my_ubuntu`. Note that you must issue the command above from the same directory where you have put the `Dockerfile`. 
 
-The first time you execute this command it will take some time because several files will have to be downloaded. However, subsequent rebuilds will be much faster.
+The first time you execute this command it may take some time because several files will have to be downloaded. However, subsequent rebuilds will be faster.
 
-## Run the Ubuntu GUI through Docker
+### 2.3 Run the customized image through Docker
 
-Now that you have created your new image, run it with the following command:
+You can run your newly built image with the following command:
 
 ```
 docker run -d --rm --name my_desktop -e TZ=Europe/Rome -e USER=ubuntu -e PASSWORD=my_password -v desktop_data:/home/ubuntu -v /dev/shm:/dev/shm -p 6080:80 my_ubuntu
 ```
 
-This command will run the `my_ubuntu` image built in the previous step and create a container called `my_desktop`. Check that this container is running with the command `docker ps`. This container will provide a Ubuntu system, and will have a user called `ubuntu`.
+This `docker run` command is identical to the one provided in the previous section, with the exception of the last string, which specifies the name of the Docker image to run (`my_ubuntu` here).
 
-You are advised to change the password for the `ubuntu` user modifying the string after PASSWORD in the command above.
+Refer to the previous section for an explanation of what the command does. As above, you are advised to change the password for the `ubuntu` user modifying the string after `PASSWORD=`.
 
-All the data you write under `/home/ubuntu` will be saved in a persistent Docker volume called `desktop_data`. 
+As before, open http://127.0.0.1:6080 on a browser to access your customized Ubuntu desktop.
 
-Now, simply open http://127.0.0.1:6080 on a browser to access your Ubuntu desktop.
+When you are done using your Ubuntu system, stop it with the command
 
-Note that you may directly install other programs, for example using `apt install <program>`. _However_, be warned that once the container is stopped (for instance, because you reboot your system) these programs will have to be installed again. If you want your changes to be persistent, edit the `Dockerfile` as stated above and rebuild the image. 
-
-If you want to stop the running Docker container, type `docker stop my_desktop`.
+```
+docker stop my_desktop
+```
 
 ## Acknowledgments
 
