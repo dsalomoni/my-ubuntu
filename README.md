@@ -22,7 +22,7 @@ This guide has two sections:
 All you need to do to get a Ubuntu system complete with a GUI via Docker is to issue the following command from a terminal:
 
 ```
-docker run -d --rm --name my_desktop -e TZ=Europe/Rome -e USER=ubuntu -e PASSWORD=my_password --mount src=desktop_data,dst=/home/ubuntu --mount src=/dev/shm,dst=/dev/shm -p 6080:80 dsalomoni/ubuntu-desktop:1.0
+docker run -d --rm --name my_desktop -e TZ=Europe/Rome -e USER=ubuntu -e PASSWORD=my_password --mount src=desktop_data,dst=/home/ubuntu --mount src=/dev/shm,dst=/dev/shm,type=bind -p 6080:80 dsalomoni/ubuntu-desktop:1.0
 ```
 The first time you execute this command it will take a while, because the Docker image has to be downloaded and stored on your system.
 
@@ -81,7 +81,7 @@ The first time you execute this command it may take some time because several fi
 You can run your newly built image with the following command:
 
 ```
-docker run -d --rm --name my_desktop -e TZ=Europe/Rome -e USER=ubuntu -e PASSWORD=my_password --mount src=desktop_data,dst=/home/ubuntu --mount src=/dev/shm,dst=/dev/shm -p 6080:80 my_ubuntu
+docker run -d --rm --name my_desktop -e TZ=Europe/Rome -e USER=ubuntu -e PASSWORD=my_password --mount src=desktop_data,dst=/home/ubuntu --mount src=/dev/shm,dst=/dev/shm,type=bind -p 6080:80 my_ubuntu
 ```
 
 This `docker run` command is identical to the one provided in the previous section, with the exception of the last string, which specifies the name of the Docker image to run (`my_ubuntu` here).
