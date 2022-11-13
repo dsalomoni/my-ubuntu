@@ -3,6 +3,7 @@ This repository contains files used to create a Ubuntu system complete with its 
 
 This material is provided by prof. Davide Salomoni for the Master in Bioinformatics at the University of Bologna.
 
+**Table of Contents**
 - [1. Introduction](#1-introduction)
 - [2. Use the provided base Docker image as is](#2-use-the-provided-base-docker-image-as-is)
   - [2.1. Details](#21-details)
@@ -10,9 +11,10 @@ This material is provided by prof. Davide Salomoni for the Master in Bioinformat
   - [3.1. Copy and update a Dockerfile](#31-copy-and-update-a-dockerfile)
   - [3.2. Build your custom Docker image](#32-build-your-custom-docker-image)
   - [3.3. Run the customized image through Docker](#33-run-the-customized-image-through-docker)
-- [4. Accessing a directory on your system from Ubuntu](#4-accessing-a-directory-on-your-system-from-ubuntu)
-- [5. Logging in to your Ubuntu system without the GUI](#5-logging-in-to-your-ubuntu-system-without-the-gui)
-- [6. Acknowledgments](#6-acknowledgments)
+- [4. Other uses](#4-other-uses)
+  - [4.1. Accessing a directory on your system from Ubuntu](#41-accessing-a-directory-on-your-system-from-ubuntu)
+  - [4.2. Logging in to your Ubuntu system without the GUI](#42-logging-in-to-your-ubuntu-system-without-the-gui)
+- [5. Acknowledgments](#5-acknowledgments)
 
 ## 1. Introduction
 
@@ -22,11 +24,11 @@ Here you will find instructions on how to use and possibly customize this base i
 
 **Important**: it is assumed that you have already installed Docker on your system, and that it is working correctly. You should also know how to edit a file, and how to run a Docker command from a terminal on your system (running Windows, Linux or Mac OS).
 
-This guide has two sections:
+This guide has two main sections:
 
-1. You can run the provided base Docker image as is. This is fine if you want just to test how the Ubuntu GUI works, or if you are happy with using just the programs that are pre-installed on the provided Ubuntu system.
+- You can run the provided base Docker image as is. This is fine if you want just to test how the Ubuntu GUI works, or if you are happy with using just the programs that are pre-installed on the provided Ubuntu system.
 
-2. Or, you can modify the base Docker image to customize it, for example installing any other programs you want to have available straight away on your Ubuntu system.
+- Or, you can modify the base Docker image to customize it, for example installing any other programs you want to have available straight away on your Ubuntu system.
 
 ## 2. Use the provided base Docker image as is
 
@@ -74,7 +76,6 @@ RUN sudo apt install -y -q --no-install-recommends \
 [...]
 ```
 
-
 ### 3.2. Build your custom Docker image
 
 Once you have edited the `Dockerfile`, you need to create (or _build_) a new Docker image, containing the packages you have specified. Build the new image with the following command:
@@ -107,9 +108,11 @@ When you are done using your Ubuntu system, stop it with the command
 docker stop my_desktop
 ```
 
-## 4. Accessing a directory on your system from Ubuntu
+## 4. Other uses
 
-In case you want to make a directory on your host system (running Windows, Linux or Mac OS) visible to Ubuntu, all you need to do is to add a `--mount` flag to the `docker run` command above (either section 1 or section 2). The `--mount` flag should have the following syntax here:
+### 4.1. Accessing a directory on your system from Ubuntu
+
+In case you want to make a directory on your host system (running Windows, Linux or Mac OS) visible to Ubuntu, all you need to do is to add a `--mount` flag to the `docker run` command above (in either section). The `--mount` flag should have the following syntax here:
 
 ```
 --mount src=<host_dir>,dst=<container_dir>,type=bind,readonly
@@ -129,10 +132,9 @@ If you have a Linux or Mac OS system instead, and want to make the directory `/b
 
 If you then open a terminal in Ubuntu and type for instance `ls -l /host`, you should see the files stored under your Windows `C:\bdb` (or Linux/Mac OS `/bdb`) directory. The `readonly` part above prevents Ubuntu from modifying the files on the host. If you want to be able to read _and_ write files present on your host system (**be careful**), remove `readonly`. 
 
+### 4.2. Logging in to your Ubuntu system without the GUI
 
-## 5. Logging in to your Ubuntu system without the GUI
-
-If you want to connect to the Ubuntu system using a terminal, i.e. without the GUI, start the container according to section 1 or 2, and then issue the following command from the terminal:
+If you want to connect to the Ubuntu system using a terminal, i.e. without the GUI, run the image according to the sections above, and then issue the following command from the terminal:
 
 ```
 docker exec -it -u ubuntu -w /home/ubuntu my_desktop bash
@@ -141,6 +143,6 @@ docker exec -it -u ubuntu -w /home/ubuntu my_desktop bash
 You will be then logged in to Ubuntu. Type `exit` to logout. As usual, type `docker stop my_desktop` when you are done using your Ubuntu system.
 
 
-## 6. Acknowledgments
+## 5. Acknowledgments
 
 This work is based on a modified version of the `docker-ubuntu-vnc-desktop` image, available at <a href="https://github.com/fcwu/docker-ubuntu-vnc-desktop">https://github.com/fcwu/docker-ubuntu-vnc-desktop</a>, where you can also find several possible additional customizations. If you are curious to know how that image was modified here, have a look at the Dockerfile in the `modified` folder.
