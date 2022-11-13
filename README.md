@@ -96,7 +96,7 @@ When you are done using your Ubuntu system, stop it with the command
 docker stop my_desktop
 ```
 
-## To access a directory on your system from Ubuntu
+## Accessing a directory on your system from Ubuntu
 
 In case you want to make a directory on your host system (running Windows, Linux or Mac OS) visible to Ubuntu, all you need to do is to add a `--mount` flag to the `docker run` command above (either section 1 or section 2); `--mount` has the following syntax:
 
@@ -111,6 +111,17 @@ For example, if on your Windows system you have the directory `C:\bdb` and want 
 ```
 
 If you then open a terminal in Ubuntu and type for instance `ls -l /host`, you should see the files stored under your Windows `C:\bdb` directory. The `readonly` part above prevents Ubuntu from modifying the files on the host. If you want to be able to read _and_ write files present on your host system (**be careful**), remove `readonly`. Note that Windows uses a backslash (`\`) to separate directory paths, while Linux and Mac OS use a regular slash (`/`) instead.
+
+## Logging in to your Ubuntu system without the GUI
+
+If you want to connect to the Ubuntu system using a terminal, i.e. without the GUI, start the container according to section 1 or 2, and then issue the following command from the terminal:
+
+```
+docker exec -it -u ubuntu -w /home/ubuntu my_desktop bash
+```
+
+You will be then logged in to Ubuntu. Type `exit` to logout. As usual, type `docker stop my_desktop` when you are done using your Ubuntu system.
+
 
 ## Acknowledgments
 
