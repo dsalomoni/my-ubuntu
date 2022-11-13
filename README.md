@@ -14,15 +14,18 @@ This material is provided by prof. Davide Salomoni for the Master in Bioinformat
 - [4. Other uses](#4-other-uses)
   - [4.1. Accessing a directory on your system from Ubuntu](#41-accessing-a-directory-on-your-system-from-ubuntu)
   - [4.2. Logging in to your Ubuntu system without the GUI](#42-logging-in-to-your-ubuntu-system-without-the-gui)
+  - [4.3. Restarting from scratch](#43-restarting-from-scratch)
 - [5. Acknowledgments](#5-acknowledgments)
 
 ## 1. Introduction
 
-A _base Docker image_ was prepared to create a Ubuntu GUI in Docker. The GUI will be accessible via a browser, such as Chrome, Edge, Safari or Firefox. 
+A _base Docker image_ was prepared to create a Ubuntu GUI in Docker. The GUI will be accessible via a browser, such as Chrome, Edge, Safari or Firefox.
 
-Here you will find instructions on how to use and possibly customize this base image.
+Here you will find instructions on how to use and possibly customize this base image to create your own Ubuntu installation using Docker images.
 
-**Important**: it is assumed that you have already installed Docker on your system, and that it is working correctly. You should also know how to edit a file, and how to run a Docker command from a terminal on your system (running Windows, Linux or Mac OS).
+**Important**: it is assumed that you have already installed Docker on your system, and that it works correctly. You should know how to edit a file, and how to run a Docker command from a terminal on your system.
+
+What is written here should work with systems running Windows, Linux or Mac OS.
 
 This guide has two main sections:
 
@@ -56,7 +59,7 @@ docker stop my_desktop
 
 ## 3. Customize the Docker image
 
-If for instance you want that your Ubuntu system contains software in addition to what was already pre-installed, you need to create a new Docker image, _derived_ from the base image used in the section above. To do this, a _Dockerfile_ is used.
+If you want that your Ubuntu system contains software in addition to what was already pre-installed in the base image, you need to create a new Docker image, _derived_ from the base image used in the section above. To do this, a _Dockerfile_ is used.
 
 ### 3.1. Copy and update a Dockerfile
 
@@ -112,19 +115,19 @@ docker stop my_desktop
 
 ### 4.1. Accessing a directory on your system from Ubuntu
 
-In case you want to make a directory on your host system (running Windows, Linux or Mac OS) visible to Ubuntu, all you need to do is to add a `--mount` flag to the `docker run` command above (in either section). The `--mount` flag should have the following syntax here:
+If you want to make a directory on your host system (running Windows, Linux or Mac OS) visible to Ubuntu, all you need to do is to add a `--mount` flag to the `docker run` command above. The `--mount` flag should have the following syntax here:
 
 ```
 --mount src=<host_dir>,dst=<container_dir>,type=bind,readonly
 ```
 
-For example, if on your Windows system you have the directory `C:\bdb` and want to make it visible under the directory `/host` to Ubuntu, add the following part to the `docker run` command (just add it _after_ the `run`):
+For example, if you are on Windows and want to make the Windows directory `C:\bdb` visible to Ubuntu under the directory `/host`, add the following part to the `docker run` command (just add it _after_ the `run`):
 
 ```
 --mount src=C:\bdb,dst=/host,type=bind,readonly
 ```
 
-If you have a Linux or Mac OS system instead, and want to make the directory `/bdb` on your system visible to Ubuntu, just type 
+Similarly, if you have a Linux or Mac OS system instead, and want for example to make the directory `/bdb` on your system visible to Ubuntu under the directory `/host`, just add 
 
 ```
 --mount src=/bdb,dst=/host,type=bind,readonly
@@ -142,6 +145,17 @@ docker exec -it -u ubuntu -w /home/ubuntu my_desktop bash
 
 You will be then logged in to Ubuntu. Type `exit` to logout. As usual, type `docker stop my_desktop` when you are done using your Ubuntu system.
 
+
+### 4.3. Restarting from scratch
+
+If you want to reset everything you did with your system, **including any changes you made to `/home/ubuntu`** on the Ubuntu system, issue the following commands:
+
+```
+docker stop my_desktop
+docker volume rm desktop_data
+```
+
+The first command stops the running Ubuntu container. The second command deletes the Docker volume holding data present under `/home/ubuntu`. **Be careful** if you stored anything there.
 
 ## 5. Acknowledgments
 
