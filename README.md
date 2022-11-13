@@ -155,7 +155,7 @@ docker stop my_desktop
 docker volume rm desktop_data
 ```
 
-The first command stops the running Ubuntu container. The second command deletes the Docker volume holding data present under `/home/ubuntu`. **Be careful** if you stored anything there.
+The first command stops the Ubuntu container if it is running. The second command deletes the Docker volume holding data present under `/home/ubuntu`. **Be careful** if you stored anything there.
 
 ## 5. Acknowledgments
 
