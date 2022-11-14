@@ -173,7 +173,7 @@ The Docker container providing the Ubuntu environment, started with the `docker 
 
 **A general but important warning: before downloading and using any software (on your host system, on a container, or anywhere else), you should be sure it’s trustworthy.**
 
-For example, Visual Studio Code can be easily installed into the Ubuntu system, but it won't run if it is started with the `docker run` commands above. In the case of Visual Studio Code, you can fix this by adding the flag `--cap-add=SYS_ADMIN` to the `docker run` command. This grants the container the possibility to perform a range of system administration operations, since these are required by Visual Studio Code. Other software may need different privileges. 
+For example, Visual Studio Code can be easily installed into the Ubuntu system (refer to the official Visual Studio Code documentation for how to do that), but it won't run if you use the `docker run` commands above. In the case of Visual Studio Code, you can fix this by adding the flag `--cap-add=SYS_ADMIN` to the `docker run` command. This grants the container the possibility to perform a range of system administration operations, since these are required by Visual Studio Code. Other software may need different privileges. 
 
 Note that granting special privileges to Docker containers is **not recommended** and should be avoided if not strictly necessary. More info can be found in the <a href="https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities">Runtime privilege and Linux capabilities</a> documentation of the Docker run reference manual.
 
