@@ -15,7 +15,7 @@ This material is provided by prof. Davide Salomoni for the Master in Bioinformat
   - [4.1. Accessing a directory on your system from Ubuntu](#41-accessing-a-directory-on-your-system-from-ubuntu)
   - [4.2. Logging in to your Ubuntu system without the GUI](#42-logging-in-to-your-ubuntu-system-without-the-gui)
   - [4.3. Restarting from scratch](#43-restarting-from-scratch)
-  - [4.4. Some software does not run](#44-some-software-does-not-run)
+  - [4.4. If some software does not run](#44-if-some-software-does-not-run)
 - [5. Acknowledgments](#5-acknowledgments)
 
 ## 1. Introduction
@@ -167,7 +167,7 @@ docker volume rm desktop_data
 
 The first command stops the Ubuntu container if it is running. The second command deletes the Docker volume holding data present under `/home/ubuntu`. **Be careful** if you stored anything there.
 
-### 4.4. Some software does not run
+### 4.4. If some software does not run
 
 The Docker container providing the Ubuntu environment, started with the `docker run` commands above, has "standard" container privileges. These are OK to install and run many programs on the dockerized Ubuntu environment. However, there are some programs that require special privileges. These are normally programs that need low-level access to some devices on your host system. 
 
