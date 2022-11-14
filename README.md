@@ -15,6 +15,7 @@ This material is provided by prof. Davide Salomoni for the Master in Bioinformat
   - [4.1. Accessing a directory on your system from Ubuntu](#41-accessing-a-directory-on-your-system-from-ubuntu)
   - [4.2. Logging in to your Ubuntu system without the GUI](#42-logging-in-to-your-ubuntu-system-without-the-gui)
   - [4.3. Restarting from scratch](#43-restarting-from-scratch)
+  - [4.4. Some software does not run](#44-some-software-does-not-run)
 - [5. Acknowledgments](#5-acknowledgments)
 
 ## 1. Introduction
@@ -156,6 +157,17 @@ docker volume rm desktop_data
 ```
 
 The first command stops the Ubuntu container if it is running. The second command deletes the Docker volume holding data present under `/home/ubuntu`. **Be careful** if you stored anything there.
+
+### 4.4. Some software does not run
+
+The Docker container providing the Ubuntu environment, started with the `docker run` commands above, has "standard" container privileges. These are OK to install and run many programs on the dockerized Ubuntu environment. However, there are some programs that require special privileges. These are normally programs that need low-level access to some devices on your host system. 
+
+**A general but important warning: before downloading and using any software (on your host system, on a container, or anywhere else), you should be sure it’s trustworthy.**
+
+For example, Visual Studio Code can be easily installed into the Ubuntu system, but it won't run if it is started with the `docker run` commands above. In the case of Visual Studio Code, you can fix this by adding the flag `--cap-add=SYS_ADMIN` to the `docker run` command. This grants the container the possibility to perform a range of system administration operations, since these are required by Visual Studio Code. Other software may need different privileges. 
+
+Note that granting special privileges to Docker containers is **not recommended** and should be avoided if not strictly necessary. More info can be found in the <a href="https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities">Runtime privilege and Linux capabilities</a> documentation of the Docker run reference manual.
+
 
 ## 5. Acknowledgments
 
