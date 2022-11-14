@@ -79,6 +79,15 @@ RUN sudo apt install -y -q --no-install-recommends \
     nmon spyder
 [...]
 ```
+If the program you are interested in is installed by other methods than `apt`, just use those methods as arguments of the `RUN` command. For instance, if you want to install a Python package via `pip`, first make sure that `pip` is installed, and then run `pip`, with something like this:
+
+```
+[...]
+RUN sudo apt install -y -q --no-install-recommends \
+    pip
+RUN sudo pip install <your_package>
+[...]
+```
 
 ### 3.2. Build your custom Docker image
 
