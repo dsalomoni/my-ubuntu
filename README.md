@@ -147,7 +147,7 @@ If you then open a terminal in Ubuntu and type for instance `ls -l /host`, you s
 
 ### 4.2. Logging in to your Ubuntu system without the GUI
 
-If you want to connect to the Ubuntu system using a terminal, i.e. without the GUI, run the image according to the sections above, and then issue the following command from the terminal:
+If you want to connect to the Ubuntu system from your host via a terminal, i.e. without the GUI, run the image according to the sections above, and then issue the following command:
 
 ```
 docker exec -it -u ubuntu -w /home/ubuntu my_desktop bash
