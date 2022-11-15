@@ -14,8 +14,9 @@ This material is provided by prof. Davide Salomoni for the Master in Bioinformat
 - [4. Other uses](#4-other-uses)
   - [4.1. Accessing a directory on your system from Ubuntu](#41-accessing-a-directory-on-your-system-from-ubuntu)
   - [4.2. Logging in to your Ubuntu system without the GUI](#42-logging-in-to-your-ubuntu-system-without-the-gui)
-  - [4.3. Restarting from scratch](#43-restarting-from-scratch)
-  - [4.4. If some software does not run](#44-if-some-software-does-not-run)
+  - [4.3. If some software does not run...](#43-if-some-software-does-not-run)
+  - [4.4. Backing up the `desktop_data` volume](#44-backing-up-the-desktop_data-volume)
+  - [4.5. Restarting from scratch](#45-restarting-from-scratch)
 - [5. Acknowledgments](#5-acknowledgments)
 
 ## 1. Introduction
@@ -156,7 +157,37 @@ docker exec -it -u ubuntu -w /home/ubuntu my_desktop bash
 You will be then logged in to Ubuntu. Type `exit` to logout. As usual, type `docker stop my_desktop` when you are done using your Ubuntu system.
 
 
-### 4.3. Restarting from scratch
+### 4.3. If some software does not run...
+
+**A general but important warning: before downloading and using any software (on your host system, on a container, or anywhere else), you should be sure it’s trustworthy.**
+
+The Docker container providing the Ubuntu environment, started with the `docker run` commands above, has "standard" container privileges. These are fine to install and run many programs on the dockerized Ubuntu environment. However, there are some programs that require special privileges. These are normally programs that need low-level access to some devices on your host system. 
+
+For example, Visual Studio Code can be easily installed into the Ubuntu system (refer to the official Visual Studio Code documentation for how to do that), but it won't run if you use the `docker run` commands above. In the case of Visual Studio Code, you can fix this by adding the flag `--cap-add=SYS_ADMIN` to the `docker run` command. This grants the container the possibility to perform a range of system administration operations, since these are required by Visual Studio Code. Other software may need different privileges. 
+
+Note that granting special privileges to Docker containers is **not recommended** and should be avoided if not strictly necessary. More info can be found in the <a href="https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities">Runtime privilege and Linux capabilities</a> documentation of the Docker run reference manual.
+
+### 4.4. Backing up the `desktop_data` volume
+
+The `desktop_data` volume is a regular Docker volume. Follow the BDP1 or BDP2 courses, or look up the <a href="https://docs.docker.com/storage/volumes/">Docker documentation on volumes</a> for info on how to back it up. 
+
+A couple of sample recipes are provided here; adapt them to your own environment. In the following commmands, the Docker volume called `desktop_data` is backed up in compressed form using either `tar` or `zip` to the current working directory, identified by `$(pwd)` below; change this to where you want to store the backup. 
+
+- backing up with `tar` - this creates a file called `desktop_backup.tar.gz`:
+
+  ```
+  docker run --rm --mount src=desktop_data,dst=/desktop_data,readonly --mount src=$(pwd),dst=/backup,type=bind alpine sh -c 'tar --exclude='.[^/]*' -czvf /backup/desktop_backup.tar.gz -C /desktop_data .'
+  ```
+
+- backing up with `zip` - this creates a file called `desktop_backup.zip`:
+  
+  ```
+  docker run --rm --mount src=desktop_data,dst=/desktop_data,readonly --mount src=$(pwd),dst=/backup,type=bind alpine sh -c 'apk add zip ; cd /desktop_data ; zip -r /backup/desktop_backup.zip *'
+  ```
+
+You can restore the data with the corresponding `tar -zx` or `unzip` commands.
+
+### 4.5. Restarting from scratch
 
 If you want to reset everything you did with your system, **including any changes you made to `/home/ubuntu`** on the Ubuntu system, issue the following commands:
 
@@ -165,17 +196,7 @@ docker stop my_desktop
 docker volume rm desktop_data
 ```
 
-The first command stops the Ubuntu container if it is running. The second command deletes the Docker volume holding data present under `/home/ubuntu`. **Be careful** if you stored anything there.
-
-### 4.4. If some software does not run
-
-The Docker container providing the Ubuntu environment, started with the `docker run` commands above, has "standard" container privileges. These are OK to install and run many programs on the dockerized Ubuntu environment. However, there are some programs that require special privileges. These are normally programs that need low-level access to some devices on your host system. 
-
-**A general but important warning: before downloading and using any software (on your host system, on a container, or anywhere else), you should be sure it’s trustworthy.**
-
-For example, Visual Studio Code can be easily installed into the Ubuntu system (refer to the official Visual Studio Code documentation for how to do that), but it won't run if you use the `docker run` commands above. In the case of Visual Studio Code, you can fix this by adding the flag `--cap-add=SYS_ADMIN` to the `docker run` command. This grants the container the possibility to perform a range of system administration operations, since these are required by Visual Studio Code. Other software may need different privileges. 
-
-Note that granting special privileges to Docker containers is **not recommended** and should be avoided if not strictly necessary. More info can be found in the <a href="https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities">Runtime privilege and Linux capabilities</a> documentation of the Docker run reference manual.
+The first command stops the Ubuntu container if it is running. The second command <u>deletes</u> the Docker volume called `desktop_data` holding data present under `/home/ubuntu`. **Be careful** if you stored anything there.
 
 
 ## 5. Acknowledgments
