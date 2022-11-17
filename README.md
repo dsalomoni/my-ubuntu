@@ -201,7 +201,7 @@ The first command stops the Ubuntu container if it is running. The second comman
 
 ### 4.6. Customizing the `nano` editor
 
-This section has not anything in particular to do with running Ubuntu in Docker, but it may be useful to people who use the `nano` editor to write simple programs in Python. Note that this is not a specific recommendation to use `nano` for this purpose; besides `nano`, many other editors are available for Python programming and you can find plenty of resource on the Internet about the pros and cons of each of them.
+This section has not anything in particular to do with running Ubuntu in Docker, but it may be useful to people who use the `nano` editor to write simple programs in Python. Note that this is not a specific recommendation to use `nano` for this purpose; besides `nano`, many other editors are available for Python programming and you can find plenty of resources on the Internet about the pros and cons of each of them.
 
 However, if you use `nano` for Python programming, you will get syntax highlighting and other useful features if you create a file called `.nanorc` in your home directory with the following content:
 
