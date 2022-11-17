@@ -17,6 +17,7 @@ This material is provided by prof. Davide Salomoni for the Master in Bioinformat
   - [4.3. If some software does not run...](#43-if-some-software-does-not-run)
   - [4.4. Backing up the `desktop_data` volume](#44-backing-up-the-desktop_data-volume)
   - [4.5. Restarting from scratch](#45-restarting-from-scratch)
+  - [4.6. Customizing the `nano` editor](#46-customizing-the-nano-editor)
 - [5. Acknowledgments](#5-acknowledgments)
 
 ## 1. Introduction
@@ -198,6 +199,19 @@ docker volume rm desktop_data
 
 The first command stops the Ubuntu container if it is running. The second command <u>deletes</u> the Docker volume called `desktop_data` holding data present under `/home/ubuntu`. **Be careful** if you stored anything there.
 
+### 4.6. Customizing the `nano` editor
+
+This section has not anything in particular to do with running Ubuntu in Docker, but it may be useful to people who use the `nano` editor to write simple programs in Python. Note that this is not a specific recommendation to use `nano` for this purpose; besides `nano`, many other editors are available for Python programming and you can find plenty of resource on the Internet about the pros and cons of each of them.
+
+However, if you use `nano` for Python programming, you will get syntax highlighting and other useful features if you create a file called `.nanorc` in your home directory with the following content:
+
+```
+include "/usr/share/nano/python.nanorc"
+set autoindent
+set nowrap
+set tabsize 4
+set tabstospaces
+```
 
 ## 5. Acknowledgments
 
