@@ -18,7 +18,6 @@ This material is provided by prof. Davide Salomoni for the Master in Bioinformat
   - [4.4. Backing up the `desktop_data` volume](#44-backing-up-the-desktop_data-volume)
   - [4.5. Restarting from scratch](#45-restarting-from-scratch)
   - [4.6. Customizing the `nano` editor](#46-customizing-the-nano-editor)
-  - [4.7. For Mac computers with an "Apple silicon" processor (M1, M2, etc.)](#47-for-mac-computers-with-an-apple-silicon-processor-m1-m2-etc)
 - [5. Acknowledgments](#5-acknowledgments)
 
 ## 1. Introduction
@@ -29,7 +28,7 @@ Here you will find instructions on how to use and possibly customize this base i
 
 **Important**: it is assumed that you have already installed Docker on your system, and that it works correctly. You should know how to edit a file, and how to run a Docker command from a terminal on your system.
 
-What is written here should work with systems running Windows, Linux or Mac OS.
+What is written here has been tested with computers running Windows, Linux or Mac OS, the latter with both x86 (Intel/AMD) and Apple silicon processors.
 
 This guide has two main sections:
 
@@ -42,7 +41,7 @@ This guide has two main sections:
 All you need to do to get a Ubuntu system complete with a GUI via Docker is to issue the following command from a terminal:
 
 ```
-docker run -d --rm --name my_desktop -e TZ=Europe/Rome -e USER=ubuntu -e PASSWORD=my_password --mount src=desktop_data,dst=/home/ubuntu --mount src=/dev/shm,dst=/dev/shm,type=bind -p 6080:80 dsalomoni/ubuntu-desktop:1.0
+docker run --platform linux/amd64 -d --rm --name my_desktop -e TZ=Europe/Rome -e USER=ubuntu -e PASSWORD=my_password --mount src=desktop_data,dst=/home/ubuntu --mount src=/dev/shm,dst=/dev/shm,type=bind -p 6080:80 dsalomoni/ubuntu-desktop:1.0
 ```
 The first time you execute this command it will take a while, because the Docker image has to be downloaded and stored on your system.
 
@@ -109,7 +108,7 @@ The first time you execute this command it may take some time because several fi
 You can run your newly built image with the following command:
 
 ```
-docker run -d --rm --name my_desktop -e TZ=Europe/Rome -e USER=ubuntu -e PASSWORD=my_password --mount src=desktop_data,dst=/home/ubuntu --mount src=/dev/shm,dst=/dev/shm,type=bind -p 6080:80 my_ubuntu
+docker run --platform linux/amd64 -d --rm --name my_desktop -e TZ=Europe/Rome -e USER=ubuntu -e PASSWORD=my_password --mount src=desktop_data,dst=/home/ubuntu --mount src=/dev/shm,dst=/dev/shm,type=bind -p 6080:80 my_ubuntu
 ```
 
 This `docker run` command is identical to the one provided in the previous section, with the exception of the last string, which specifies the name of the Docker image to run (`my_ubuntu` here).
@@ -213,19 +212,6 @@ set nowrap
 set tabsize 4
 set tabstospaces
 ```
-### 4.7. For Mac computers with an "Apple silicon" processor (M1, M2, etc.)
-
-If you have a Mac with an Apple silicon processor, when running the `docker run` commands above you may get the following message:
- 
-```
-WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
-```
-This warning should not prevent the Docker images to run. However, to get rid of this message, add the `--platform linux/amd64` flag to the `docker run` commands, like this:
-
-```
-docker run --platform linux/amd64 <rest of the command>
-```
-
 
 ## 5. Acknowledgments
 
