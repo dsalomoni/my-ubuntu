@@ -11,13 +11,14 @@ This material is provided by prof. Davide Salomoni for the Master in Bioinformat
   - [3.1. Copy and update a Dockerfile](#31-copy-and-update-a-dockerfile)
   - [3.2. Build your custom Docker image](#32-build-your-custom-docker-image)
   - [3.3. Run the customized image through Docker](#33-run-the-customized-image-through-docker)
-- [4. Other uses](#4-other-uses)
+- [4. Other notes](#4-other-notes)
   - [4.1. Accessing a directory on your system from Ubuntu](#41-accessing-a-directory-on-your-system-from-ubuntu)
   - [4.2. Logging in to your Ubuntu system without the GUI](#42-logging-in-to-your-ubuntu-system-without-the-gui)
   - [4.3. If some software does not run...](#43-if-some-software-does-not-run)
   - [4.4. Backing up the `desktop_data` volume](#44-backing-up-the-desktop_data-volume)
   - [4.5. Restarting from scratch](#45-restarting-from-scratch)
   - [4.6. Customizing the `nano` editor](#46-customizing-the-nano-editor)
+  - [4.7. For Mac computers with an "Apple silicon" processor (M1, M2, etc.)](#47-for-mac-computers-with-an-apple-silicon-processor-m1-m2-etc)
 - [5. Acknowledgments](#5-acknowledgments)
 
 ## 1. Introduction
@@ -123,7 +124,7 @@ When you are done using your Ubuntu system, stop it with the command
 docker stop my_desktop
 ```
 
-## 4. Other uses
+## 4. Other notes
 
 ### 4.1. Accessing a directory on your system from Ubuntu
 
@@ -212,6 +213,19 @@ set nowrap
 set tabsize 4
 set tabstospaces
 ```
+### 4.7. For Mac computers with an "Apple silicon" processor (M1, M2, etc.)
+
+If you have a Mac with an Apple silicon processor, when running the `docker run` commands above you may get the following message:
+ 
+```
+WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+```
+This warning should not prevent the Docker images to run. However, to get rid of this message, add the `--platform linux/amd64` flag to the `docker run` commands, like this:
+
+```
+docker run --platform linux/amd64 <rest of the command>
+```
+
 
 ## 5. Acknowledgments
 
