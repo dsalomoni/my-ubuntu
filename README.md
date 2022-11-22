@@ -216,7 +216,7 @@ set tabstospaces
 
 ### 4.7. `apt update` complains that a "Release file [...] is not valid yet"
 
-If you issue that `sudo apt update` command and you get a message similar to this one:
+If you issue a `sudo apt update` command and you get a message similar to this one:
 
     E: Release file for http://security.ubuntu.com/ubuntu/dists/focal-security/InRelease is not valid yet (invalid for another 10h 51min 21s). Updates for this repository will not be applied.
 
