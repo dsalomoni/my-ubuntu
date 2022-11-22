@@ -18,6 +18,7 @@ This material is provided by prof. Davide Salomoni for the Master in Bioinformat
   - [4.4. Backing up the `desktop_data` volume](#44-backing-up-the-desktop_data-volume)
   - [4.5. Restarting from scratch](#45-restarting-from-scratch)
   - [4.6. Customizing the `nano` editor](#46-customizing-the-nano-editor)
+  - [4.7. `apt update` complains that a "Release file \[...\] is not valid yet"](#47-apt-update-complains-that-a-release-file--is-not-valid-yet)
 - [5. Acknowledgments](#5-acknowledgments)
 
 ## 1. Introduction
@@ -212,6 +213,15 @@ set nowrap
 set tabsize 4
 set tabstospaces
 ```
+
+### 4.7. `apt update` complains that a "Release file [...] is not valid yet"
+
+If you issue that `sudo apt update` command and you get a message similar to this one:
+
+    E: Release file for http://security.ubuntu.com/ubuntu/dists/focal-security/InRelease is not valid yet (invalid for another 10h 51min 21s). Updates for this repository will not be applied.
+
+it might mean that the clock of your computer is off, i.e. not corresponding to the actual time of the day. If this is the case, set the clock correctly and try the `apt update` command again.
+
 
 ## 5. Acknowledgments
 
