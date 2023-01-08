@@ -19,6 +19,7 @@ This material is provided by prof. Davide Salomoni for the Master in Bioinformat
   - [4.5. Restarting from scratch](#45-restarting-from-scratch)
   - [4.6. Customizing the `nano` editor](#46-customizing-the-nano-editor)
   - [4.7. `apt update` complains that a "Release file \[...\] is not valid yet"](#47-apt-update-complains-that-a-release-file--is-not-valid-yet)
+  - [4.8. Error with `docker build` while updating packages](#48-error-with-docker-build-while-updating-packages)
 - [5. Acknowledgments](#5-acknowledgments)
 
 ## 1. Introduction
@@ -222,6 +223,17 @@ If you issue a `sudo apt update` command and you get a message similar to this o
 
 it might mean that the clock of your computer is off, i.e. not corresponding to the actual time of the day. If this is the case, set the clock correctly and try the `apt update` command again.
 
+### 4.8. Error with `docker build` while updating packages
+
+With the `docker build` command, you might get an error similar to the following, especially if you rebuilt an image after some time (days, weeks) you first built it:
+
+    E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+
+First check that your Dockerfile is correct. If it is, this error may be due to the fact that the system has cached some packages in the past in order to speed up the build phase; because of the cache, these packages have not been downloaded again, but since they are outdated, an error is thrown. You can fix this error disabling the cache when building the image using the `--no-build-cache` flag, like this: 
+
+```
+docker build --no-cache <other build arguments>
+```
 
 ## 5. Acknowledgments
 
